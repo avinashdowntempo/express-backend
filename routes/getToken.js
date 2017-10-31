@@ -12,7 +12,7 @@ router.post('/', function (req, res, next) {
     console.log(req.app.get('superSecret'));
     database.connection((db) => {
         db.collection('users')
-            .findOne({ email: req.body.first_name })
+            .findOne({ email: req.body.email })
             .then((users) => {
                 const payload = {
                     email: users.email,
@@ -24,7 +24,8 @@ router.post('/', function (req, res, next) {
                 console.log('payload', payload);
                 console.log('payload token:', token);
                 response = {
-                    first_name: req.body.first_name,
+                    first_name: req.body.email,
+                    displayName: users.name,
                     token: token
                 };
                 res.json(response);
@@ -40,16 +41,10 @@ router.post('/', function (req, res, next) {
                 });
             })
             .catch((err) => {
+                res.status(500).send({ error: 'user not found' });
                 console.log(err);
             });
     });
-
-
-
-
-
-
 });
-
 
 module.exports = router;
