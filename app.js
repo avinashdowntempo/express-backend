@@ -9,9 +9,10 @@ var jwt = require('jsonwebtoken');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var jobs = require('./routes/jobs');
 var getToken = require('./routes/getToken');
 var app = express();
-var apiRoutes = express.Router(); 
+var apiRoutes = express.Router();
 
 app.set('superSecret', config.secret);
 console.log(app.get('superSecret'));
@@ -42,26 +43,27 @@ app.use(function (req, res, next) {
 
 app.use('/', index);
 app.use('/gettoken', getToken);
-apiRoutes.use(function(req, res, next) {
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    if (token) {
-      jwt.verify(token, app.get('superSecret'), function(err, decoded) {      
-        if (err) {
-          return res.json({ success: false, message: 'Failed to authenticate token.' });    
-        } else {
-          req.decoded = decoded;    
-          next();
-        }
-      });
-  
-    } else {
-      return res.status(403).send({ 
-          success: false, 
-          message: 'No token provided.' 
-      });  
-    }
-  });
+apiRoutes.use(function (req, res, next) {
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  if (token) {
+    jwt.verify(token, app.get('superSecret'), function (err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        next();
+      }
+    });
+
+  } else {
+    return res.status(403).send({
+      success: false,
+      message: 'No token provided.'
+    });
+  }
+});
 app.use('/users', users);
+app.use('/jobs', jobs);
 
 
 // catch 404 and forward to error handler

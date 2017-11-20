@@ -39,13 +39,6 @@ router.get('/users', (req, res) => {
             res.json(response);
           }
         });
-        /*try {
-          var decoded = jwt.verify(token2, 'shhhhh');
-          console.log(decoded.header);
-          
-        } catch(err) {
-          console.log("token not valid");
-        }*/
       })
       .catch((err) => {
         sendError(err, res);
