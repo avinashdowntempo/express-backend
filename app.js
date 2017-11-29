@@ -10,6 +10,7 @@ var jwt = require('jsonwebtoken');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var jobs = require('./routes/jobs');
+var candidate = require('./routes/candidate');
 var getToken = require('./routes/getToken');
 var app = express();
 var apiRoutes = express.Router();
@@ -64,6 +65,7 @@ apiRoutes.use(function (req, res, next) {
 });
 app.use('/users', users);
 app.use('/jobs', jobs);
+app.use('/candidate', candidate);
 
 
 // catch 404 and forward to error handler
