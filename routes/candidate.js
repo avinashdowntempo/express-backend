@@ -6,6 +6,16 @@ var config = require('../config');
 var candidate = require('../schemas/candidateschema').CandidateModel;
 var ObjectId = require('mongodb').ObjectID;
 
+router.get('/all', function (req, res, next) {
+  candidate.find(function (err, data) {
+    if (err) {
+      console.log(err);
+      res.status(403).end();
+    }
+    res.status(200).send({ value: data, msg: "queryed succesfully" });
+  });
+});
+
 router.get('/:_id', function (req, res, next) {
   var searchid = req.params._id;
   candidate.find({ position_id: searchid }, function (err, data) {
@@ -16,6 +26,7 @@ router.get('/:_id', function (req, res, next) {
     res.status(200).send({ value: data, msg: "updated succesfully" });
   });
 });
+
 
 router.patch('/update', function (req, res, next) {
   console.log(req.body);
