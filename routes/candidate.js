@@ -16,9 +16,39 @@ router.get('/all', function (req, res, next) {
   });
 });
 
+router.get('/pending', function (req, res, next) {
+  candidate.find({ status: 'pending' }, function (err, data) {
+    if (err) {
+      console.log(err);
+      res.status(403).end();
+    }
+    res.status(200).send({ value: data, msg: "updated succesfully" });
+  });
+});
+
+router.get('/selected', function (req, res, next) {
+  candidate.find({ status: 'selected' }, function (err, data) {
+    if (err) {
+      console.log(err);
+      res.status(403).end();
+    }
+    res.status(200).send({ value: data, msg: "updated succesfully" });
+  });
+});
+
+router.get('/rejected', function (req, res, next) {
+  candidate.find({ status: 'rejected' }, function (err, data) {
+    if (err) {
+      console.log(err);
+      res.status(403).end();
+    }
+    res.status(200).send({ value: data, msg: "updated succesfully" });
+  });
+});
+
 router.get('/:_id', function (req, res, next) {
   var searchid = req.params._id;
-  candidate.find({ position_id: searchid }, function (err, data) {
+  candidate.find({ position_id: searchid, status: 'pending' }, function (err, data) {
     if (err) {
       console.log(err);
       res.status(403).end();
